@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-typecheck-build:
+    name: Lint, Type-check & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        # postinstall menjalankan `prisma generate` secara otomatis.
+        # prisma.config.ts membaca DIRECT_URL via env() — harus tersedia di sini,
+        # bukan di step terpisah. Nilai dummy cukup karena generate hanya butuh
+        # schema, bukan koneksi aktif ke database.
+        run: npm ci
+        env:
+          DIRECT_URL: "postgresql://user:pass@localhost:5432/db"
+          DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+
+      - name: Run Prettier check
+        run: npm run format:check
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript type-check
+        run: npm run type-check
+
+      - name: Build project
+        run: npm run build
+        env:
+          # Dummy vars agar build tidak gagal tanpa .env
+          DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+          DIRECT_URL: "postgresql://user:pass@localhost:5432/db"
+          NEXTAUTH_SECRET: "ci-secret-placeholder"
+          NEXTAUTH_URL: "http://localhost:3000"
+          GOOGLE_CLIENT_ID: "dummy"
+          GOOGLE_CLIENT_SECRET: "dummy"
+          GITHUB_CLIENT_ID: "dummy"
+          GITHUB_CLIENT_SECRET: "dummy"

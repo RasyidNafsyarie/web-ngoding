@@ -1,0 +1,408 @@
+@import "tailwindcss";
+
+/* ════════════════════════════════════════════════════════════════
+   NGODING SANTUY — Retro Pixel Art Design System (Kaeru-style)
+   Single source of truth. All tokens from DESIGN.md.
+   ════════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  /* ── Colors ─────────────────────────────────────────────────── */
+  --color-sky-primary: #87CEEB; /* Soft Sky Blue */
+  --color-pond-green: #B8D8BA;   /* Muted Landscape Green */
+  --color-card-white: #FAFAF5;   /* Warm Off-White */
+  --color-container: #E8E4D9;    /* Cream Border */
+  --color-retro-green: #4ade80;  /* Primary Accent Green */
+  --color-soft-green: #a6cca4;   /* Secondary Accent Green */
+  --color-earth: #8B7355;        /* Grounding Brown */
+  --color-ink: #1a1a2e;          /* Soft Deep Navy-Black for Text/Borders */
+  --color-deep-black: #111111;   /* Rich Dark Black for CTA buttons */
+  --color-muted: #6B7280;        /* Secondary Gray Text */
+  --color-destructive: #DC2626;  /* Error Red */
+  --color-warning: #F59E0B;      /* Warning Amber */
+  --color-pixel-grass: #5CB85C;  /* Pixel Art Illustration Green */
+  --color-pixel-water: #5BC0DE;  /* Pixel Art Illustration Blue */
+
+  /* Neo-Brutalism Compatibility Aliases - Hex Values for absolute safety */
+  --color-neo-bg: #87CEEB;         /* maps to sky-primary */
+  --color-neo-fg: #1a1a2e;         /* maps to ink */
+  --color-neo-accent: #4ade80;     /* maps to retro-green */
+  --color-neo-secondary: #a6cca4;  /* maps to soft-green */
+  --color-neo-muted: #B8D8BA;      /* maps to pond-green */
+  --color-neo-white: #FAFAF5;      /* maps to card-white */
+
+  /* ── Typography ─────────────────────────────────────────────── */
+  --font-pixel: var(--font-press-start-2p), "Courier New", monospace;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  /* ── Borders & Radii ─────────────────────────────────────────── */
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  --radius-input: 8px;
+  
+  /* Old aliases for compatibility */
+  --radius-none: var(--radius-card); /* Soft rounding on cards is default */
+  --radius-full: 9999px;
+
+  /* ── Hard Shadows (zero-blur, offset bottom-right) ──────────── */
+  --shadow-retro-sm: 2px 2px 0px 0px #1a1a2e;
+  --shadow-retro-md: 3px 3px 0px 0px #1a1a2e;
+  --shadow-retro-lg: 4px 4px 0px 0px #1a1a2e;
+  --shadow-retro-pressed: 1px 1px 0px 0px #1a1a2e;
+
+  /* Neo-Brutalism Compatibility Aliases */
+  --shadow-neo-sm: 2px 2px 0px 0px #1a1a2e;
+  --shadow-neo-md: 3px 3px 0px 0px #1a1a2e;
+  --shadow-neo-lg: 4px 4px 0px 0px #1a1a2e;
+  --shadow-neo-xl: 4px 4px 0px 0px #1a1a2e;
+  --shadow-neo-white: 3px 3px 0px 0px #FAFAF5;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-sky-primary);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 400; /* Calm Retro defaults to regular body weight */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings — Press Start 2P pixel/bitmap font, sentence case/lowercase */
+h1,
+h2,
+h3 {
+  font-family: var(--font-pixel);
+  font-weight: 400; /* Pixel fonts must stay at 400 to avoid grid distortion */
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  color: var(--color-ink);
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+/* Body prose */
+p,
+li {
+  font-weight: 400;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PIXEL ART & TEXTURES
+   ════════════════════════════════════════════════════════════════ */
+
+/* Mandatory pixel art crisp rendering */
+.pixel-art,
+[data-pixel-art] {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* Subtle graph grid background texture for sky */
+.bg-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(26, 26, 46, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26, 26, 46, 0.05) 1px, transparent 1px);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CALM RETRO COMPONENT UTILITIES
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Card / Container ────────────────────────────────────────── */
+/* DESIGN.md: bg-card-white, border-2 border-container, rounded-card, hard shadow */
+.neo-card {
+  background-color: var(--color-card-white);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-retro-md);
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.neo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-retro-lg);
+}
+
+/* ── Primary Button (Green/Dark) ─────────────────────────────── */
+/* DESIGN.md: border-2 border-ink, rounded-btn, hard shadow, active press effect */
+.btn-neo-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--color-deep-black);
+  color: var(--color-card-white);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-btn);
+  padding: 12px 24px;
+  min-height: 48px;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro-md);
+  transition:
+    background-color 150ms ease-out,
+    transform 150ms ease-out,
+    box-shadow 150ms ease-out;
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn-neo-primary:hover {
+  background-color: #222222;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-retro-lg);
+}
+
+/* Active press-down effect */
+.btn-neo-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-retro-pressed);
+}
+
+.btn-neo-primary:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--shadow-retro-md),
+    0 0 0 2px var(--color-retro-green);
+}
+
+.btn-neo-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Secondary Button (Green) ───────────────────────────────── */
+.btn-neo-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--color-retro-green);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-btn);
+  padding: 12px 24px;
+  min-height: 48px;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro-md);
+  transition:
+    background-color 150ms ease-out,
+    transform 150ms ease-out,
+    box-shadow 150ms ease-out;
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn-neo-secondary:hover {
+  background-color: #3fe276;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-retro-lg);
+}
+
+.btn-neo-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-retro-pressed);
+}
+
+.btn-neo-secondary:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--shadow-retro-md),
+    0 0 0 2px var(--color-deep-black);
+}
+
+.btn-neo-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Outline Button (White) ──────────────────────────────────── */
+.btn-neo-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--color-card-white);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-btn);
+  padding: 12px 24px;
+  min-height: 48px;
+  cursor: pointer;
+  box-shadow: var(--shadow-retro-md);
+  transition:
+    background-color 150ms ease-out,
+    transform 150ms ease-out,
+    box-shadow 150ms ease-out;
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn-neo-outline:hover {
+  background-color: var(--color-soft-green);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-retro-lg);
+}
+
+.btn-neo-outline:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-retro-pressed);
+}
+
+.btn-neo-outline:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--shadow-retro-md),
+    0 0 0 2px var(--color-retro-green);
+}
+
+/* ── Input ───────────────────────────────────────────────────── */
+/* DESIGN.md: border-2 border-container, rounded-input, focus → shadow-sm */
+.neo-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  background-color: var(--color-card-white);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-input);
+  outline: none;
+  transition:
+    background-color 150ms ease-out,
+    box-shadow 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+.neo-input::placeholder {
+  color: rgba(26, 26, 46, 0.4);
+  font-weight: 500;
+}
+
+.neo-input:focus-visible {
+  border-color: var(--color-ink);
+  box-shadow: var(--shadow-retro-sm);
+}
+
+/* ── Badge ───────────────────────────────────────────────────── */
+.neo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  background-color: var(--color-card-white);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  border: 1.5px solid var(--color-ink);
+  box-shadow: var(--shadow-retro-sm);
+  border-radius: 9999px;
+  transition: transform 150ms ease-out;
+}
+
+.neo-badge:hover {
+  transform: scale(1.02);
+}
+
+/* ── Section Divider ─────────────────────────────────────────── */
+.neo-divider {
+  border-top: 2px solid var(--color-ink);
+  border-bottom: 2px solid var(--color-ink);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CUSTOM ANIMATIONS (DESIGN.md — Animation & Motion)
+   ════════════════════════════════════════════════════════════════ */
+
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes sprite-idle {
+  0%, 100% { background-position: 0 0; }
+  33% { background-position: -32px 0; }
+  66% { background-position: -64px 0; }
+}
+
+.animate-drift {
+  animation: drift 60s linear infinite;
+}
+
+.animate-float {
+  animation: gentle-float 4s ease-in-out infinite;
+}
+
+.animate-sprite {
+  animation: sprite-idle 1s steps(1) infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   REDUCED MOTION — DESIGN.md Accessibility
+   ════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .neo-card:hover {
+    transform: none;
+  }
+
+  .btn-neo-primary:active,
+  .btn-neo-secondary:active,
+  .btn-neo-outline:active {
+    transform: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FOCUS STATES — Keyboard Accessibility
+   ════════════════════════════════════════════════════════════════ */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}

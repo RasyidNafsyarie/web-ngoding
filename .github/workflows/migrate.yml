@@ -1,0 +1,46 @@
+name: Database Migration
+
+# Jalankan migrasi otomatis saat kode masuk ke branch main (production).
+# Menggunakan DIRECT_URL (koneksi langsung, port 5432) — bukan pooled —
+# karena prisma migrate deploy butuh advisory lock yang tidak tersedia via PgBouncer.
+#
+# Cara setup: tambahkan DIRECT_URL sebagai GitHub Actions Secret di
+# Settings → Secrets and variables → Actions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # Hanya jalankan kalau ada perubahan di folder prisma
+      - "prisma/migrations/**"
+      - "prisma/schema.prisma"
+
+jobs:
+  migrate:
+    name: Run Prisma Migrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          DIRECT_URL: "postgresql://user:pass@localhost:5432/db"
+          DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+
+      - name: Run database migrations
+        run: npm run db:deploy
+        env:
+          # DIRECT_URL dipakai prisma.config.ts untuk CLI (migrate/generate)
+          # Set sebagai GitHub Actions Secret, jangan di-hardcode!
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          # DATABASE_URL juga dibutuhkan agar .env tidak kosong
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
