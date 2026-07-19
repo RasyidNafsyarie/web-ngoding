@@ -7,28 +7,28 @@
 
 @theme inline {
   /* ── Colors ─────────────────────────────────────────────────── */
-  --color-sky-primary: #87CEEB; /* Soft Sky Blue */
-  --color-pond-green: #B8D8BA;   /* Muted Landscape Green */
-  --color-card-white: #FAFAF5;   /* Warm Off-White */
-  --color-container: #E8E4D9;    /* Cream Border */
-  --color-retro-green: #4ade80;  /* Primary Accent Green */
-  --color-soft-green: #a6cca4;   /* Secondary Accent Green */
-  --color-earth: #8B7355;        /* Grounding Brown */
-  --color-ink: #1a1a2e;          /* Soft Deep Navy-Black for Text/Borders */
-  --color-deep-black: #111111;   /* Rich Dark Black for CTA buttons */
-  --color-muted: #6B7280;        /* Secondary Gray Text */
-  --color-destructive: #DC2626;  /* Error Red */
-  --color-warning: #F59E0B;      /* Warning Amber */
-  --color-pixel-grass: #5CB85C;  /* Pixel Art Illustration Green */
-  --color-pixel-water: #5BC0DE;  /* Pixel Art Illustration Blue */
+  --color-sky-primary: #87ceeb; /* Soft Sky Blue */
+  --color-pond-green: #b8d8ba; /* Muted Landscape Green */
+  --color-card-white: #fafaf5; /* Warm Off-White */
+  --color-container: #e8e4d9; /* Cream Border */
+  --color-retro-green: #4ade80; /* Primary Accent Green */
+  --color-soft-green: #a6cca4; /* Secondary Accent Green */
+  --color-earth: #8b7355; /* Grounding Brown */
+  --color-ink: #1a1a2e; /* Soft Deep Navy-Black for Text/Borders */
+  --color-deep-black: #111111; /* Rich Dark Black for CTA buttons */
+  --color-muted: #6b7280; /* Secondary Gray Text */
+  --color-destructive: #dc2626; /* Error Red */
+  --color-warning: #f59e0b; /* Warning Amber */
+  --color-pixel-grass: #5cb85c; /* Pixel Art Illustration Green */
+  --color-pixel-water: #5bc0de; /* Pixel Art Illustration Blue */
 
   /* Neo-Brutalism Compatibility Aliases - Hex Values for absolute safety */
-  --color-neo-bg: #87CEEB;         /* maps to sky-primary */
-  --color-neo-fg: #1a1a2e;         /* maps to ink */
-  --color-neo-accent: #4ade80;     /* maps to retro-green */
-  --color-neo-secondary: #a6cca4;  /* maps to soft-green */
-  --color-neo-muted: #B8D8BA;      /* maps to pond-green */
-  --color-neo-white: #FAFAF5;      /* maps to card-white */
+  --color-neo-bg: #87ceeb; /* maps to sky-primary */
+  --color-neo-fg: #1a1a2e; /* maps to ink */
+  --color-neo-accent: #4ade80; /* maps to retro-green */
+  --color-neo-secondary: #a6cca4; /* maps to soft-green */
+  --color-neo-muted: #b8d8ba; /* maps to pond-green */
+  --color-neo-white: #fafaf5; /* maps to card-white */
 
   /* ── Typography ─────────────────────────────────────────────── */
   --font-pixel: var(--font-press-start-2p), "Courier New", monospace;
@@ -39,7 +39,7 @@
   --radius-card: 12px;
   --radius-btn: 8px;
   --radius-input: 8px;
-  
+
   /* Old aliases for compatibility */
   --radius-none: var(--radius-card); /* Soft rounding on cards is default */
   --radius-full: 9999px;
@@ -55,9 +55,8 @@
   --shadow-neo-md: 3px 3px 0px 0px #1a1a2e;
   --shadow-neo-lg: 4px 4px 0px 0px #1a1a2e;
   --shadow-neo-xl: 4px 4px 0px 0px #1a1a2e;
-  --shadow-neo-white: 3px 3px 0px 0px #FAFAF5;
+  --shadow-neo-white: 3px 3px 0px 0px #fafaf5;
 }
-
 
 /* ════════════════════════════════════════════════════════════════
    BASE STYLES
@@ -349,19 +348,35 @@ li {
    ════════════════════════════════════════════════════════════════ */
 
 @keyframes drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes gentle-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes sprite-idle {
-  0%, 100% { background-position: 0 0; }
-  33% { background-position: -32px 0; }
-  66% { background-position: -64px 0; }
+  0%,
+  100% {
+    background-position: 0 0;
+  }
+  33% {
+    background-position: -32px 0;
+  }
+  66% {
+    background-position: -64px 0;
+  }
 }
 
 .animate-drift {

@@ -79,7 +79,10 @@ export default function RegisterForm() {
       {/* Form */}
       <form action={formAction} className="space-y-4" noValidate>
         <div>
-          <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">
+          <label
+            htmlFor="name"
+            className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1"
+          >
             Nama Lengkap
           </label>
           <input
@@ -99,7 +102,10 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">
+          <label
+            htmlFor="email"
+            className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1"
+          >
             Email
           </label>
           <input
@@ -119,7 +125,10 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">
+          <label
+            htmlFor="password"
+            className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1"
+          >
             Password
           </label>
           <input
@@ -154,7 +163,9 @@ export default function RegisterForm() {
           <div className="w-full border-t-2 border-ink" />
         </div>
         <div className="relative flex justify-center">
-          <span className="px-3 bg-card-white text-xs font-semibold uppercase tracking-widest text-ink/65">atau</span>
+          <span className="px-3 bg-card-white text-xs font-semibold uppercase tracking-widest text-ink/65">
+            atau
+          </span>
         </div>
       </div>
 
@@ -180,4 +191,3 @@ export default function RegisterForm() {
     </div>
   );
 }
-

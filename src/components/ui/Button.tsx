@@ -36,7 +36,6 @@ type Props = ButtonProps | AnchorProps;
  * - 3 variants: primary (dark black), secondary (retro-green), outline (card-white)
  */
 export function Button({
-
   variant = "primary",
   size = "md",
   children,

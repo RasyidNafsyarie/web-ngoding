@@ -92,7 +92,10 @@ export default function LoginForm() {
         <h1 className="text-xl mb-2 font-pixel">MASUK</h1>
         <p className="text-sm font-semibold text-ink/75 normal-case tracking-normal">
           Belum punya akun?{" "}
-          <Link href="/register" className="text-ink underline hover:text-retro-green font-semibold">
+          <Link
+            href="/register"
+            className="text-ink underline hover:text-retro-green font-semibold"
+          >
             Daftar sekarang
           </Link>
         </p>
@@ -124,7 +127,10 @@ export default function LoginForm() {
       {/* Form credentials */}
       <form action={formAction} className="space-y-4" noValidate>
         <div>
-          <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">
+          <label
+            htmlFor="email"
+            className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1"
+          >
             Email
           </label>
           <input
@@ -140,7 +146,10 @@ export default function LoginForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">
+          <label
+            htmlFor="password"
+            className="block text-xs font-semibold uppercase tracking-wider text-ink mb-1"
+          >
             Password
           </label>
           <input
@@ -170,7 +179,9 @@ export default function LoginForm() {
           <div className="w-full border-t-2 border-ink" />
         </div>
         <div className="relative flex justify-center">
-          <span className="px-3 bg-card-white text-xs font-semibold uppercase tracking-widest text-ink/65">atau</span>
+          <span className="px-3 bg-card-white text-xs font-semibold uppercase tracking-widest text-ink/65">
+            atau
+          </span>
         </div>
       </div>
 
@@ -190,4 +201,3 @@ export default function LoginForm() {
     </div>
   );
 }
-

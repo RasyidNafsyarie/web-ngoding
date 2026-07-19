@@ -27,9 +27,7 @@ export default function Home() {
             {/* Headline using pixel font */}
             <h1 className="text-xl sm:text-3xl md:text-4xl font-pixel leading-normal tracking-wide text-ink">
               Belajar Coding{" "}
-              <span
-                className="inline-block bg-retro-green px-4 py-1 border-2 border-ink rounded-lg shadow-retro-sm"
-              >
+              <span className="inline-block bg-retro-green px-4 py-1 border-2 border-ink rounded-lg shadow-retro-sm">
                 Santai
               </span>
             </h1>
@@ -68,9 +66,7 @@ export default function Home() {
       {/* ── Design System Preview ───────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="flex items-center gap-4 mb-10">
-          <h2 className="text-lg md:text-xl font-pixel tracking-wider text-ink">
-            Design System
-          </h2>
+          <h2 className="text-lg md:text-xl font-pixel tracking-wider text-ink">Design System</h2>
           <span className="neo-badge rotate-1">Preview</span>
         </div>
 
@@ -81,7 +77,8 @@ export default function Home() {
               <h3 className="font-pixel text-[10px] tracking-wide text-ink">Retro Card</h3>
             </div>
             <p className="text-sm font-medium text-ink leading-relaxed">
-              Menggunakan border 2px, radius 12px, serta hard shadow offset 3px yang lebih halus dan tenang.
+              Menggunakan border 2px, radius 12px, serta hard shadow offset 3px yang lebih halus dan
+              tenang.
             </p>
           </Card>
 
@@ -91,9 +88,15 @@ export default function Home() {
               <h3 className="font-pixel text-[10px] tracking-wide text-ink">Tombol</h3>
             </div>
             <div className="flex flex-col gap-3">
-              <Button variant="primary" size="sm">Primary / Dark</Button>
-              <Button variant="secondary" size="sm">Secondary / Green</Button>
-              <Button variant="outline" size="sm">Outline / White</Button>
+              <Button variant="primary" size="sm">
+                Primary / Dark
+              </Button>
+              <Button variant="secondary" size="sm">
+                Secondary / Green
+              </Button>
+              <Button variant="outline" size="sm">
+                Outline / White
+              </Button>
             </div>
           </Card>
 
@@ -145,4 +148,3 @@ export default function Home() {
     </MainLayout>
   );
 }
-

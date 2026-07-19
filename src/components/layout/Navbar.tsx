@@ -193,7 +193,10 @@ export function Navbar() {
               <Link href="/login" className="btn-neo-outline flex-1 text-center text-sm h-10 py-2">
                 Masuk
               </Link>
-              <Link href="/register" className="btn-neo-primary flex-1 text-center text-sm h-10 py-2">
+              <Link
+                href="/register"
+                className="btn-neo-primary flex-1 text-center text-sm h-10 py-2"
+              >
                 Daftar Gratis
               </Link>
             </div>
@@ -243,5 +246,3 @@ function SearchBar() {
     </div>
   );
 }
-
-

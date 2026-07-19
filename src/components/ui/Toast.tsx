@@ -60,7 +60,11 @@ export function Toast({ message, variant = "info", duration = 4000, onClose }: T
         {config.icon}
       </span>
 
-      <p className={`text-sm font-bold leading-snug flex-1 ${variant === "error" ? "text-white" : "text-ink"}`}>{message}</p>
+      <p
+        className={`text-sm font-bold leading-snug flex-1 ${variant === "error" ? "text-white" : "text-ink"}`}
+      >
+        {message}
+      </p>
 
       <button
         onClick={() => {
@@ -83,7 +87,6 @@ export function Toast({ message, variant = "info", duration = 4000, onClose }: T
     </div>
   );
 }
-
 
 /* ── Toast Container & global showToast ───────────────────────── */
 
