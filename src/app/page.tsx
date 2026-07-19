@@ -1,7 +1,39 @@
 import { MainLayout } from "@/components/layout";
 import { Card, Button } from "@/components/ui";
+import { prisma } from "@/lib/db/prisma";
+import { Article, LearningPath } from "@prisma/client";
 
-export default function Home() {
+export const revalidate = 60; // Revalidate homepage every 60 seconds (ISR)
+
+export default async function Home() {
+  let paths: (LearningPath & { articles: { id: string }[] })[] = [];
+  let latestArticles: (Article & { learningPath: LearningPath })[] = [];
+
+  try {
+    // Fetch featured learning paths
+    paths = await prisma.learningPath.findMany({
+      take: 3,
+      include: {
+        articles: {
+          where: { isPublished: true },
+          select: { id: true },
+        },
+      },
+    });
+
+    // Fetch latest published articles
+    latestArticles = await prisma.article.findMany({
+      where: { isPublished: true },
+      orderBy: { createdAt: "desc" },
+      take: 4,
+      include: {
+        learningPath: true,
+      },
+    });
+  } catch (error) {
+    console.error("Gagal memuat data beranda dari database:", error);
+  }
+
   return (
     <MainLayout>
       {/* ── Hero ────────────────────────────────────────────────── */}
@@ -12,10 +44,10 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        {/* Ambient floating pixel-art clouds decoration placeholder */}
+        {/* Ambient floating clouds decoration */}
         <div className="absolute top-8 left-10 animate-float opacity-75 pointer-events-none hidden md:block">
-          <span className="text-white font-pixel text-xs bg-card-white border-2 border-ink rounded-full px-4 py-1.5 shadow-retro-sm">
-            ☁️ 8-bit Clouds
+          <span className="text-ink font-pixel text-[9px] bg-card-white border-2 border-ink rounded-full px-4 py-1.5 shadow-retro-sm">
+            ☁️ Belajar Santuy
           </span>
         </div>
 
@@ -32,7 +64,7 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-ink max-w-xl leading-relaxed">
+            <p className="text-xs md:text-sm font-bold text-ink max-w-xl leading-relaxed">
               Platform belajar coding interaktif berbahasa Indonesia. HTML, CSS, JavaScript —
               semuanya bisa dipraktikkan langsung di browser dengan editor & console bawaan.
             </p>
@@ -63,62 +95,105 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Design System Preview ───────────────────────────────── */}
+      {/* ── Featured Learning Paths ─────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-        <div className="flex items-center gap-4 mb-10">
-          <h2 className="text-lg md:text-xl font-pixel tracking-wider text-ink">Design System</h2>
-          <span className="neo-badge rotate-1">Preview</span>
+        <div className="flex items-center justify-between gap-4 mb-10 flex-wrap">
+          <div className="flex items-center gap-4">
+            <h2 className="text-xs md:text-sm font-pixel tracking-wider text-ink">
+              Learning Paths
+            </h2>
+            <span className="neo-badge rotate-1 bg-retro-green">Unggulan</span>
+          </div>
+          <Button href="/paths" variant="outline" size="sm">
+            Lihat Semua Path →
+          </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Card demo */}
-          <Card>
-            <div className="border-b-2 border-ink -mx-6 -mt-6 mb-4 px-6 py-3 bg-pond-green rounded-t-[10px]">
-              <h3 className="font-pixel text-[10px] tracking-wide text-ink">Retro Card</h3>
-            </div>
-            <p className="text-sm font-medium text-ink leading-relaxed">
-              Menggunakan border 2px, radius 12px, serta hard shadow offset 3px yang lebih halus dan
-              tenang.
-            </p>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {paths.map((path) => (
+            <Card key={path.id} className="flex flex-col h-full justify-between">
+              <div>
+                <div className="border-b-2 border-ink -mx-6 -mt-6 mb-4 px-6 py-3 bg-pond-green rounded-t-[10px] flex justify-between items-center">
+                  <h3 className="font-pixel text-[9px] tracking-wide text-ink truncate max-w-[70%]">
+                    {path.title}
+                  </h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 border border-ink bg-card-white rounded-md">
+                    {path.articles.length} Materi
+                  </span>
+                </div>
+                <p className="text-xs text-ink leading-relaxed mb-6 font-medium">
+                  {path.description}
+                </p>
+              </div>
+              <Button href={`/paths/${path.slug}`} variant="secondary" className="w-full">
+                Mulai Belajar
+              </Button>
+            </Card>
+          ))}
 
-          {/* Buttons demo */}
-          <Card>
-            <div className="border-b-2 border-ink -mx-6 -mt-6 mb-4 px-6 py-3 bg-soft-green rounded-t-[10px]">
-              <h3 className="font-pixel text-[10px] tracking-wide text-ink">Tombol</h3>
+          {paths.length === 0 && (
+            <div className="col-span-full">
+              <Card className="text-center py-12">
+                <p className="text-sm font-bold text-ink/60">
+                  Belum ada Jalur Belajar yang tersedia.
+                </p>
+              </Card>
             </div>
-            <div className="flex flex-col gap-3">
-              <Button variant="primary" size="sm">
-                Primary / Dark
-              </Button>
-              <Button variant="secondary" size="sm">
-                Secondary / Green
-              </Button>
-              <Button variant="outline" size="sm">
-                Outline / White
-              </Button>
-            </div>
-          </Card>
+          )}
+        </div>
+      </section>
 
-          {/* Typography demo */}
-          <Card>
-            <div className="border-b-2 border-ink -mx-6 -mt-6 mb-4 px-6 py-3 bg-retro-green rounded-t-[10px]">
-              <h3 className="font-pixel text-[10px] tracking-wide text-ink">Tipografi</h3>
-            </div>
-            <p className="font-pixel text-xs tracking-wider leading-relaxed text-ink">
-              Press Start 2P
-            </p>
-            <p className="font-sans font-medium text-sm text-ink mt-3 leading-relaxed">
-              Body text menggunakan Inter untuk kemudahan membaca di perangkat layar lebar.
-            </p>
-          </Card>
+      {/* ── Latest Articles ─────────────────────────────────────── */}
+      <section className="border-t-2 border-ink bg-card-white py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex items-center gap-4 mb-10">
+            <h2 className="text-xs md:text-sm font-pixel tracking-wider text-ink">
+              Artikel Terbaru
+            </h2>
+            <span className="neo-badge -rotate-1 bg-sky-primary">Materi Terkini</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {latestArticles.map((article) => (
+              <Card key={article.id} className="flex flex-col justify-between" padding="p-5">
+                <div>
+                  <span className="inline-block text-[9px] font-bold px-2.5 py-0.5 border border-ink bg-soft-green rounded-full mb-3 uppercase">
+                    {article.learningPath.title}
+                  </span>
+                  <h3 className="font-bold text-sm text-ink mb-2 leading-snug line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-xs text-ink/75 line-clamp-3 mb-4">
+                    Pelajari materi {article.title} dalam jalur belajar {article.learningPath.title}
+                    .
+                  </p>
+                </div>
+                <Button
+                  href={`/paths/${article.learningPath.slug}/${article.slug}`}
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-center"
+                >
+                  Baca Artikel
+                </Button>
+              </Card>
+            ))}
+
+            {latestArticles.length === 0 && (
+              <div className="col-span-full">
+                <p className="text-center text-xs font-bold text-ink/50 py-8">
+                  Belum ada artikel terbaru.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* ── Color Palette section ───────────────────────────────── */}
       <section className="border-y-2 border-ink bg-ink py-12">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-sm md:text-base font-pixel tracking-widest text-card-white mb-8">
+          <h2 className="text-[10px] font-pixel tracking-widest text-card-white mb-8 uppercase">
             Warna (Palette)
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">

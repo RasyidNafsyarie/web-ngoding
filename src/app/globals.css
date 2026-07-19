@@ -421,3 +421,57 @@ li {
   outline: 2px solid var(--color-ink);
   outline-offset: 2px;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   SYNTAX HIGHLIGHTING (highlight.js theme)
+   ════════════════════════════════════════════════════════════════ */
+.hljs {
+  color: #fafaf5;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #7b8496;
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-type,
+.hljs-built_in,
+.hljs-bullet {
+  color: #4ade80; /* retro green */
+  font-weight: 600;
+}
+.hljs-string,
+.hljs-meta .hljs-string,
+.hljs-symbol,
+.hljs-regexp,
+.hljs-addition {
+  color: #b8d8ba; /* pond green */
+}
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable {
+  color: #87ceeb; /* sky primary */
+}
+.hljs-title,
+.hljs-section,
+.hljs-name {
+  color: #fafaf5;
+  font-weight: 600;
+}
+.hljs-attr,
+.hljs-attribute {
+  color: #a6cca4; /* soft green */
+}
+.hljs-params,
+.hljs-class,
+.hljs-function {
+  color: #fafaf5;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: bold;
+}
