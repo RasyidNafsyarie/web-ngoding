@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cmrnpax2400086sui75mhvugr",
+    "title": "Pengenalan CSS",
+    "slug": "pengenalan-css",
+    "pathTitle": "CSS Dasar",
+    "pathSlug": "css-dasar",
+    "content": "Pengenalan CSS CSS (Cascading Style Sheets) mengatur tampilan elemen HTML — warna, ukuran, layout, dan animasi. Cara Menambahkan CSS Ada tiga cara menambahkan CSS ke HTML: html p { color: blue; } Teks biru Sintaks Dasar css selektor { properti: nilai; } / Contoh / h1 { color: 4F46E5; font-size: 2rem; } External stylesheet adalah cara terbaik karena memisahkan struktur (HTML) dari tampilan (CSS)."
+  },
+  {
+    "id": "cmrnpaws400046suiyznodcdj",
+    "title": "Pengenalan HTML",
+    "slug": "pengenalan-html",
+    "pathTitle": "HTML Dasar",
+    "pathSlug": "html-dasar",
+    "content": "Pengenalan HTML HTML (HyperText Markup Language) adalah bahasa markup standar untuk membuat halaman web. Apa itu HTML? HTML mendefinisikan struktur konten halaman web menggunakan elemen-elemen yang direpresentasikan oleh tag. html Halaman Pertamaku Halo, Dunia! Ini adalah paragraf pertamaku. Struktur Dasar Setiap dokumen HTML dimulai dengan yang memberitahu browser bahwa ini dokumen HTML5. Selalu tambahkan atribut lang pada tag untuk aksesibilitas dan SEO yang lebih baik. Playground Interaktif Coba ketik, ubah, dan jalankan kode HTML, CSS, dan JavaScript di bawah ini untuk melihat hasilnya langsung! Belajar HTML di Ngoding Santuy! Coba klik tombol di bawah ini dan perhatikan tab Konsol. Tekan Saya \" initialCss=\"/ Tulis CSS Anda di bawah ini / .kotak-retro { background-color: fafaf5; border: 4px solid 1a1a2e; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 4px 4px 0px 0px 1a1a2e; } button { background-color: 4ade80; color: 1a1a2e; font-weight: bold; border: 2px solid 1a1a2e; padding: 8px 16px; border-radius: 6px; cursor: pointer; box-shadow: 2px 2px 0px 0px 1a1a2e; transition: transform 0.1s; } button:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0px 0px 1a1a2e; }\" initialJs=\"// Tulis JavaScript Anda di bawah ini console.log('Skrip dimuat!'); const btn = document.getElementById('btn-tekan'); btn.addEventListener('click', () => { console.log('Tombol ditekan! Mencoba mencetak log.'); console.warn('Ini adalah pesan peringatan!'); console.error('Ini adalah pesan error simulasi.'); });\" />"
+  },
+  {
+    "id": "cmrnpawuw00056suies94w7x4",
+    "title": "Elemen & Atribut HTML",
+    "slug": "elemen-atribut-html",
+    "pathTitle": "HTML Dasar",
+    "pathSlug": "html-dasar",
+    "content": "Elemen & Atribut HTML Elemen HTML terdiri dari tag pembuka, konten, dan tag penutup. Anatomi Elemen html Ini adalah paragraf. Atribut Umum | Atribut | Kegunaan | |---------|----------| | id | Identifikasi unik elemen | | class | Kelompokkan elemen untuk CSS | | href | URL tujuan untuk link | | src | Sumber untuk gambar/script | | alt | Teks alternatif gambar | Elemen Void Beberapa elemen tidak memiliki tag penutup, disebut void element: html Elemen void tidak perlu tag penutup, tapi menambahkan / sebelum > adalah praktik yang baik."
+  },
+  {
+    "id": "cmrnpawxg00066suirpgzaeab",
+    "title": "HTML Semantik",
+    "slug": "html-semantik",
+    "pathTitle": "HTML Dasar",
+    "pathSlug": "html-dasar",
+    "content": "HTML Semantik HTML semantik menggunakan elemen yang bermakna untuk mendeskripsikan konten, bukan sekadar tampilannya. Mengapa Semantik Penting? - Aksesibilitas: Screen reader memahami struktur halaman - SEO: Mesin pencari mengenali konten penting - Maintainability: Kode lebih mudah dibaca developer lain Elemen Semantik Utama html ... Judul Artikel Sub Topik Konten... Konten sampingan ... Hindari menggunakan dan untuk semua hal. Gunakan elemen semantik yang tepat."
+  },
+  {
+    "id": "cmrnpax4n00096suip51fjeme",
+    "title": "Selektor CSS",
+    "slug": "selektor-css",
+    "pathTitle": "CSS Dasar",
+    "pathSlug": "css-dasar",
+    "content": "Selektor CSS Selektor menentukan elemen HTML mana yang akan diberi style. Jenis Selektor css / Selektor elemen / p { color: gray; } / Selektor class / .card { border-radius: 12px; } / Selektor ID / header { background: 4F46E5; } / Selektor kombinasi / .card h2 { font-size: 1.5rem; } / Pseudo-class / a:hover { color: EA580C; } / Pseudo-element / p::first-line { font-weight: bold; } Spesifisitas Ketika beberapa aturan bertabrakan, CSS menggunakan spesifisitas: | Selektor | Spesifisitas | |----------|--------------| | Inline style | 1000 | | ID | 100 | | Class/Atribut/Pseudo-class | 10 | | Elemen/Pseudo-element | 1 | Hindari penggunaan !important — ini menyulitkan debugging di kemudian hari."
+  }
+]

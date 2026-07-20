@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/auth/LogoutButton";
+import { SearchBar } from "@/components/search";
 
 const navLinks = [
   { href: "/paths", label: "Learning Paths" },
@@ -280,45 +281,5 @@ export function Navbar() {
         )}
       </header>
     </>
-  );
-}
-
-/* ── Search Bar ──────────────────────────────────────────────── */
-function SearchBar() {
-  return (
-    <div className="relative w-full">
-      <label htmlFor="global-search" className="sr-only">
-        Cari artikel atau learning path
-      </label>
-      <div
-        aria-hidden="true"
-        className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-ink/60"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="square"
-          strokeLinejoin="miter"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-      </div>
-      <input
-        id="global-search"
-        type="search"
-        placeholder="CARI MATERI..."
-        autoComplete="off"
-        className="
-          neo-input h-9 !pl-9 pr-4 text-xs w-full rounded-full border-2 border-ink
-          placeholder:text-ink/40 placeholder:font-semibold placeholder:uppercase placeholder:tracking-wide
-        "
-      />
-    </div>
   );
 }
