@@ -72,6 +72,53 @@ Setiap dokumen HTML dimulai dengan \`<!DOCTYPE html>\` yang memberitahu browser 
 <Note>
   Selalu tambahkan atribut \`lang\` pada tag \`<html>\` untuk aksesibilitas dan SEO yang lebih baik.
 </Note>
+
+## Playground Interaktif
+
+Coba ketik, ubah, dan jalankan kode HTML, CSS, dan JavaScript di bawah ini untuk melihat hasilnya langsung!
+
+<Playground
+  initialHtml="<!-- Tulis HTML Anda di bawah ini -->
+<div class='kotak-retro'>
+  <h2>Belajar HTML di Ngoding Santuy!</h2>
+  <p>Coba klik tombol di bawah ini dan perhatikan tab Konsol.</p>
+  <button id='btn-tekan'>Tekan Saya</button>
+</div>"
+  initialCss="/* Tulis CSS Anda di bawah ini */
+.kotak-retro {
+  background-color: #fafaf5;
+  border: 4px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 4px 4px 0px 0px #1a1a2e;
+}
+
+button {
+  background-color: #4ade80;
+  color: #1a1a2e;
+  font-weight: bold;
+  border: 2px solid #1a1a2e;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px 0px #1a1a2e;
+  transition: transform 0.1s;
+}
+
+button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px #1a1a2e;
+}"
+  initialJs="// Tulis JavaScript Anda di bawah ini
+console.log('Skrip dimuat!');
+const btn = document.getElementById('btn-tekan');
+btn.addEventListener('click', () => {
+  console.log('Tombol ditekan! Mencoba mencetak log.');
+  console.warn('Ini adalah pesan peringatan!');
+  console.error('Ini adalah pesan error simulasi.');
+});"
+/>
 `,
       },
       {

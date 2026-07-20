@@ -3,12 +3,14 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import rehypeHighlight from "rehype-highlight";
 import { Alert, Note, Callout, CodeBlock, CodeGroup } from "@/components/mdx";
+import { Playground } from "@/components/playground";
 
 const mdxComponents = {
   Alert,
   Note,
   Callout,
   CodeGroup,
+  Playground,
   pre: CodeBlock,
   // Custom styled headings to fit Kaeru-style Calm Retro
   h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
