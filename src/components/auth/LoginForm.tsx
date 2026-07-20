@@ -8,14 +8,10 @@
  * Menggunakan signIn dari next-auth/react untuk OAuth.
  */
 
-import { useActionState, useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { loginAction } from "@/lib/auth/actions";
-import type { ActionResult } from "@/lib/auth/actions";
-
-const initialState: ActionResult = { success: true };
 
 function OAuthButton({
   provider,
@@ -66,15 +62,8 @@ function OAuthButton({
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
-  const [, startTransition] = useTransition();
-
-  // Server Action state
-  const [state, formAction, isPending] = useActionState(
-    async (_prev: ActionResult, formData: FormData) => {
-      return loginAction(formData, callbackUrl);
-    },
-    initialState,
-  );
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
   // Tampilkan error dari URL (mis. OAuth error)
   const urlError = searchParams.get("error");
@@ -82,6 +71,39 @@ export default function LoginForm() {
   const handleOAuth = (provider: "google" | "github") => {
     startTransition(() => {
       signIn(provider, { callbackUrl });
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!email || !password) {
+      setError("Email dan password wajib diisi.");
+      return;
+    }
+
+    startTransition(async () => {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        if (res.error === "CredentialsSignin" || res.code === "credentials") {
+          setError("Email atau password salah.");
+        } else {
+          setError("Gagal login. Coba lagi.");
+        }
+      } else {
+        // Hard navigation to callback URL so navbar updates immediately
+        window.location.href = callbackUrl;
+      }
     });
   };
 
@@ -113,19 +135,19 @@ export default function LoginForm() {
         </div>
       )}
 
-      {/* Error dari action */}
-      {!state.success && state.error && (
+      {/* Error dari login */}
+      {error && (
         <div
           role="alert"
           aria-live="polite"
           className="mb-4 p-3 border-2 border-ink rounded-lg bg-destructive/10 text-destructive text-sm font-semibold"
         >
-          {state.error}
+          {error}
         </div>
       )}
 
       {/* Form credentials */}
-      <form action={formAction} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <div>
           <label
             htmlFor="email"
@@ -141,7 +163,7 @@ export default function LoginForm() {
             required
             placeholder="kamu@email.com"
             className="neo-input"
-            aria-describedby={!state.success ? "form-error" : undefined}
+            aria-describedby={error ? "form-error" : undefined}
           />
         </div>
 

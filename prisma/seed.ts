@@ -12,7 +12,7 @@
 
 import { PrismaClient, Role } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import * as crypto from "crypto";
+import bcrypt from "bcryptjs";
 import "dotenv/config";
 
 const adapter = new PrismaPg({
@@ -23,10 +23,9 @@ const prisma = new PrismaClient({ adapter });
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
 
-/** Hash password sederhana dengan SHA-256 untuk seed (bukan bcrypt agar tidak perlu install di dev).
- *  CATATAN: Akun seed ini hanya untuk development. Di production, bcrypt wajib dipakai (M4-03). */
+/** Hash password dengan bcryptjs agar cocok dengan sistem autentikasi runtime. */
 function hashPasswordForSeed(password: string): string {
-  return crypto.createHash("sha256").update(password).digest("hex");
+  return bcrypt.hashSync(password, 12);
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -337,7 +336,9 @@ async function main() {
         providerAccountId: admin.email,
       },
     },
-    update: {},
+    update: {
+      refresh_token: adminPasswordHash,
+    },
     create: {
       userId: admin.id,
       type: "credentials",

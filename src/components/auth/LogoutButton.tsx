@@ -3,12 +3,12 @@
 /**
  * src/components/auth/LogoutButton.tsx
  *
- * Tombol logout — memanggil logoutAction (Server Action).
- * Clear session + redirect ke homepage (USER_FLOWS 2.3).
+ * Tombol logout — memanggil signOut (client-side next-auth/react).
+ * Clear session + redirect ke homepage (USER_FLOWS 2.3) dengan refresh instan.
  */
 
 import { useTransition } from "react";
-import { logoutAction } from "@/lib/auth/actions";
+import { signOut } from "next-auth/react";
 
 interface LogoutButtonProps {
   className?: string;
@@ -23,7 +23,7 @@ export default function LogoutButton({
 
   const handleLogout = () => {
     startTransition(async () => {
-      await logoutAction();
+      await signOut({ callbackUrl: "/" });
     });
   };
 

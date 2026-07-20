@@ -8,7 +8,6 @@
  */
 
 import { useActionState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { registerAction } from "@/lib/auth/actions";
@@ -18,7 +17,6 @@ import { useEffect } from "react";
 const initialState: ActionResult = { success: true };
 
 export default function RegisterForm() {
-  const router = useRouter();
   const [, startTransition] = useTransition();
 
   const [state, formAction, isPending] = useActionState(
@@ -28,12 +26,12 @@ export default function RegisterForm() {
     initialState,
   );
 
-  // Redirect ke home setelah register + auto-login berhasil
+  // Redirect ke home setelah register + auto-login berhasil dengan hard reload agar Navbar ter-update
   useEffect(() => {
     if (state.success && state.message?.includes("berhasil dibuat!")) {
-      router.replace("/");
+      window.location.href = "/";
     }
-  }, [state, router]);
+  }, [state]);
 
   const handleOAuth = (provider: "google" | "github") => {
     startTransition(() => {

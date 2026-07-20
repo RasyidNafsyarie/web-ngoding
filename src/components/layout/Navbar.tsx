@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import LogoutButton from "@/components/auth/LogoutButton";
 
 const navLinks = [
   { href: "/paths", label: "Learning Paths" },
@@ -17,6 +19,7 @@ const navLinks = [
  */
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   return (
     <>
@@ -81,29 +84,73 @@ export function Navbar() {
 
           {/* Right Controls */}
           <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href="/login"
-              className="
-                hidden md:inline-flex items-center justify-center
-                px-4 py-2 min-h-[40px] h-10
-                border-2 border-ink font-semibold text-sm rounded-lg
-                bg-card-white text-ink
-                shadow-retro-sm
-                hover:bg-soft-green
-                active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-pressed
-                transition-all duration-100
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2
-              "
-            >
-              Masuk
-            </Link>
+            {status === "loading" ? (
+              <div className="w-[180px] h-10 hidden md:block" />
+            ) : status === "authenticated" ? (
+              <>
+                {session?.user?.role === "ADMIN" && (
+                  <Link
+                    href="/admin"
+                    className="
+                      hidden md:inline-flex items-center justify-center
+                      px-4 py-2 min-h-[40px] h-10
+                      border-2 border-ink font-semibold text-sm rounded-lg
+                      bg-retro-green text-ink
+                      shadow-retro-sm
+                      hover:bg-soft-green
+                      active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-pressed
+                      transition-all duration-100
+                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2
+                    "
+                  >
+                    Admin
+                  </Link>
+                )}
+                <Link
+                  href="/profile"
+                  className="
+                    hidden md:inline-flex items-center justify-center
+                    px-4 py-2 min-h-[40px] h-10
+                    border-2 border-ink font-semibold text-sm rounded-lg
+                    bg-card-white text-ink
+                    shadow-retro-sm
+                    hover:bg-soft-green
+                    active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-pressed
+                    transition-all duration-100
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2
+                  "
+                >
+                  Profil
+                </Link>
+                <LogoutButton className="btn-neo-primary hidden md:inline-flex px-4 py-2 text-sm min-h-[40px] h-10 items-center justify-center font-semibold" />
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="
+                    hidden md:inline-flex items-center justify-center
+                    px-4 py-2 min-h-[40px] h-10
+                    border-2 border-ink font-semibold text-sm rounded-lg
+                    bg-card-white text-ink
+                    shadow-retro-sm
+                    hover:bg-soft-green
+                    active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-pressed
+                    transition-all duration-100
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2
+                  "
+                >
+                  Masuk
+                </Link>
 
-            <Link
-              href="/register"
-              className="btn-neo-primary hidden md:inline-flex px-4 py-2 text-sm min-h-[40px] h-10 items-center justify-center"
-            >
-              Daftar Gratis
-            </Link>
+                <Link
+                  href="/register"
+                  className="btn-neo-primary hidden md:inline-flex px-4 py-2 text-sm min-h-[40px] h-10 items-center justify-center"
+                >
+                  Daftar Gratis
+                </Link>
+              </>
+            )}
 
             {/* Mobile Hamburger */}
             <button
@@ -189,17 +236,46 @@ export function Navbar() {
               ))}
             </ul>
 
-            <div className="flex gap-3 pt-1">
-              <Link href="/login" className="btn-neo-outline flex-1 text-center text-sm h-10 py-2">
-                Masuk
-              </Link>
-              <Link
-                href="/register"
-                className="btn-neo-primary flex-1 text-center text-sm h-10 py-2"
-              >
-                Daftar Gratis
-              </Link>
-            </div>
+            {status === "loading" ? (
+              <div className="h-10 w-full" />
+            ) : status === "authenticated" ? (
+              <div className="flex flex-col gap-2 pt-1">
+                {session?.user?.role === "ADMIN" && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setMenuOpen(false)}
+                    className="btn-neo-outline text-center text-sm h-10 py-2 bg-retro-green text-ink"
+                  >
+                    Admin Panel
+                  </Link>
+                )}
+                <Link
+                  href="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn-neo-outline text-center text-sm h-10 py-2 bg-card-white text-ink"
+                >
+                  Profil Saya
+                </Link>
+                <LogoutButton className="btn-neo-primary text-center text-sm h-10 py-2 font-semibold w-full" />
+              </div>
+            ) : (
+              <div className="flex gap-3 pt-1">
+                <Link
+                  href="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn-neo-outline flex-1 text-center text-sm h-10 py-2"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn-neo-primary flex-1 text-center text-sm h-10 py-2"
+                >
+                  Daftar Gratis
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </header>
