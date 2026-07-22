@@ -1,6 +1,8 @@
 import { MainLayout } from "@/components/layout";
 import { Card, Button } from "@/components/ui";
+import { ArticleCompletionButton } from "@/components/article/ArticleCompletionButton";
 import { prisma } from "@/lib/db/prisma";
+import { getAuthenticatedUser } from "@/lib/auth/session";
 import { Article, LearningPath } from "@prisma/client";
 import { renderMDX } from "@/lib/mdx/mdx";
 import { notFound } from "next/navigation";
@@ -63,8 +65,13 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   let tocHeadings: HeadingItem[] = [];
   let prevArticle: { slug: string; title: string; order: number } | null = null;
   let nextArticle: { slug: string; title: string; order: number } | null = null;
+  let isCompleted = false;
+  let isLoggedIn = false;
 
   try {
+    const authUser = await getAuthenticatedUser();
+    isLoggedIn = Boolean(authUser);
+
     // 1. Fetch path
     path = await prisma.learningPath.findUnique({
       where: { slug: pathSlug },
@@ -81,6 +88,19 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
       if (dbArticle && dbArticle.isPublished) {
         article = dbArticle;
+
+        // Fetch user progress if logged in
+        if (authUser) {
+          const userProgress = await prisma.userArticleProgress.findUnique({
+            where: {
+              userId_articleId: {
+                userId: authUser.id,
+                articleId: dbArticle.id,
+              },
+            },
+          });
+          isCompleted = Boolean(userProgress);
+        }
 
         // 3. Compile MDX
         compiledContent = await renderMDX(dbArticle.content);
@@ -168,6 +188,15 @@ export default async function ArticleDetailPage({ params }: PageProps) {
               {/* Rendered MDX Container */}
               <div className="mdx-content prose max-w-none text-ink leading-relaxed font-sans">
                 {compiledContent}
+              </div>
+
+              {/* ── Mark as Completed Action ── */}
+              <div className="mt-12 pt-8 border-t-2 border-dashed border-ink/20 flex justify-center">
+                <ArticleCompletionButton
+                  articleId={article.id}
+                  initialIsCompleted={isCompleted}
+                  isLoggedIn={isLoggedIn}
+                />
               </div>
             </Card>
 
