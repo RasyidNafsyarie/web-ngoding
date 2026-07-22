@@ -7,15 +7,17 @@ import { useSession } from "next-auth/react";
 interface ArticleCompletionButtonProps {
   articleId: string;
   initialIsCompleted?: boolean;
+  isLoggedIn?: boolean;
 }
 
 export function ArticleCompletionButton({
   articleId,
   initialIsCompleted = false,
+  isLoggedIn: initialIsLoggedIn,
 }: ArticleCompletionButtonProps) {
   const router = useRouter();
   const { status } = useSession();
-  const isLoggedIn = status === "authenticated";
+  const isLoggedIn = status === "authenticated" || Boolean(initialIsLoggedIn);
 
   const [isCompleted, setIsCompleted] = useState(initialIsCompleted);
   const [isLoading, setIsLoading] = useState(false);
