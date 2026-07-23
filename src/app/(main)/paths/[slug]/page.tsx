@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Card, Button } from "@/components/ui";
 import { prisma } from "@/lib/db/prisma";
@@ -9,6 +10,46 @@ export const revalidate = 60; // ISR revalidate every 60 seconds
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
+
+  try {
+    const path = await prisma.learningPath.findUnique({
+      where: { slug },
+      select: { title: true, description: true },
+    });
+
+    if (!path) {
+      return {
+        title: "Jalur Belajar Tidak Ditemukan",
+      };
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ngodingsantuy.id";
+
+    return {
+      title: path.title,
+      description: path.description,
+      openGraph: {
+        title: `${path.title} | Ngoding Santuy`,
+        description: path.description,
+        url: `${baseUrl}/paths/${slug}`,
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${path.title} | Ngoding Santuy`,
+        description: path.description,
+      },
+    };
+  } catch {
+    return {
+      title: "Jalur Belajar",
+    };
+  }
 }
 
 export default async function PathDetailPage({ params }: PageProps) {
@@ -36,8 +77,38 @@ export default async function PathDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ngodingsantuy.id";
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Beranda",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Jalur Belajar",
+        item: `${baseUrl}/paths`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: path.title,
+        item: `${baseUrl}/paths/${path.slug}`,
+      },
+    ],
+  };
+
   return (
     <MainLayout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* ── Breadcrumb ── */}
         <nav

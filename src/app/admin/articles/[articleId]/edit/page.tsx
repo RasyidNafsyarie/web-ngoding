@@ -3,7 +3,19 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { MdxEditorWithPreview } from "@/components/admin/MdxEditorWithPreview";
+import dynamic from "next/dynamic";
+
+const MdxEditorWithPreview = dynamic(
+  () => import("@/components/admin/MdxEditorWithPreview").then((mod) => mod.MdxEditorWithPreview),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[450px] w-full border-2 border-ink rounded-xl bg-card-white flex items-center justify-center font-bold text-ink/60">
+        Memuat Editor MDX...
+      </div>
+    ),
+  },
+);
 
 interface PathItem {
   id: string;

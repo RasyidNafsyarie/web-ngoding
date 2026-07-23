@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { MainLayout } from "@/components/layout";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { requireAdmin } from "@/lib/auth/session";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Admin Panel",
+    template: "%s | Admin Panel — Ngoding Santuy",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export const dynamic = "force-dynamic";
 

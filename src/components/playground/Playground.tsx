@@ -422,6 +422,9 @@ export function Playground({ initialHtml, initialCss, initialJs }: PlaygroundPro
 
             {/* AREA OUTPUT LOG KONSOL */}
             <div
+              aria-live="polite"
+              role="status"
+              aria-label="Output Konsol Playground"
               className={`flex-1 w-full p-4 font-mono text-xs overflow-y-auto bg-ink text-card-white min-h-[300px] lg:min-h-[440px] select-text ${
                 rightActiveTab === "console" ? "block" : "hidden"
               }`}

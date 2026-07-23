@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Card, Button } from "@/components/ui";
 import { ArticleCompletionButton } from "@/components/article/ArticleCompletionButton";
@@ -12,6 +13,74 @@ export const revalidate = 60; // ISR revalidate every 60 seconds
 
 interface PageProps {
   params: Promise<{ slug: string; articleSlug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const { slug: pathSlug, articleSlug } = resolvedParams;
+
+  try {
+    const path = await prisma.learningPath.findUnique({
+      where: { slug: pathSlug },
+      select: { title: true },
+    });
+
+    if (!path) {
+      return { title: "Artikel Tidak Ditemukan" };
+    }
+
+    const article = await prisma.article.findFirst({
+      where: {
+        learningPath: { slug: pathSlug },
+        slug: articleSlug,
+        isPublished: true,
+      },
+      select: {
+        title: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!article) {
+      return { title: "Artikel Tidak Ditemukan" };
+    }
+
+    const cleanSnippet = article.content
+      .replace(/#+\s+/g, "")
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/\n+/g, " ")
+      .trim()
+      .slice(0, 160);
+
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ngodingsantuy.id";
+    const articleUrl = `${baseUrl}/paths/${pathSlug}/${articleSlug}`;
+
+    return {
+      title: article.title,
+      description: cleanSnippet || `Pelajari ${article.title} di Ngoding Santuy.`,
+      openGraph: {
+        title: `${article.title} | ${path.title}`,
+        description: cleanSnippet || `Pelajari ${article.title} di Ngoding Santuy.`,
+        url: articleUrl,
+        type: "article",
+        publishedTime: article.createdAt.toISOString(),
+        modifiedTime: article.updatedAt.toISOString(),
+        siteName: "Ngoding Santuy",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${article.title} | Ngoding Santuy`,
+        description: cleanSnippet || `Pelajari ${article.title} di Ngoding Santuy.`,
+      },
+    };
+  } catch {
+    return { title: "Artikel | Ngoding Santuy" };
+  }
 }
 
 // Clean markdown formatting from heading string
@@ -112,8 +181,71 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ngodingsantuy.id";
+  const articleUrl = `${baseUrl}/paths/${path.slug}/${article.slug}`;
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: `Modul ${article.order}: ${article.title} dalam jalur ${path.title}`,
+    datePublished: article.createdAt.toISOString(),
+    dateModified: article.updatedAt.toISOString(),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    author: {
+      "@type": "Organization",
+      name: "Ngoding Santuy",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Ngoding Santuy",
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Beranda",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Jalur Belajar",
+        item: `${baseUrl}/paths`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: path.title,
+        item: `${baseUrl}/paths/${path.slug}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: article.title,
+        item: articleUrl,
+      },
+    ],
+  };
+
   return (
     <MainLayout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <div className="mx-auto max-w-7xl px-6 py-12">
         {/* ── Breadcrumb ── */}
         <nav

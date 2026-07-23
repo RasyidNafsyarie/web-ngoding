@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Card, Button } from "@/components/ui";
 import { prisma } from "@/lib/db/prisma";
 import { LearningPath } from "@prisma/client";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Jalur Belajar",
+  description:
+    "Pilih jalur belajar coding yang sesuai dengan kebutuhanmu. Kurikulum terstruktur dari Web Development dasar hingga tingkat lanjut.",
+  openGraph: {
+    title: "Jalur Belajar | Ngoding Santuy",
+    description:
+      "Pilih jalur belajar coding yang sesuai dengan kebutuhanmu. Kurikulum terstruktur dari Web Development dasar hingga tingkat lanjut.",
+    type: "website",
+  },
+};
 
 export const revalidate = 60; // ISR revalidate every 60 seconds
 

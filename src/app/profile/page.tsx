@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { MainLayout } from "@/components/layout";
 import { ProfileView } from "@/components/profile/ProfileView";
 import { getAuthenticatedUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
+
+export const metadata: Metadata = {
+  title: "Profil Saya",
+  description: "Lihat total XP dan progres penyelesaian artikel coding kamu.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export const dynamic = "force-dynamic";
 
